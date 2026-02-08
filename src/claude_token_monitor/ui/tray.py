@@ -101,14 +101,14 @@ class TrayIcon:
             # Update menu
             self._icon.menu = self._build_menu()
             # Update tooltip
-            self._icon.title = f"Claude: {session_pct:.0f}%"
+            self._icon.title = f"{T('app_title')}: {session_pct:.0f}%"
 
     def run(self) -> None:
         """Start the tray icon. Call from a daemon thread."""
         self._icon = pystray.Icon(
             "claude-token-monitor",
             icon=self._create_icon_image(),
-            title="Claude Token Monitor",
+            title=T("app_title"),
             menu=self._build_menu(),
         )
         self._icon.run()

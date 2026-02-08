@@ -24,16 +24,33 @@ STRINGS = {
     "input_label": "Input",
     "output_label": "Output",
     "cache_create_label": "Cache Created",
-    "cache_read_label": "Read",
-    "requests_label": "Requests",
-    "sessions_label": "Sessions",
+    "cache_read_label": "Cache Read",
+    "requests_sessions_format": "{req_count} Requests / {sess_count} Sessions",
+    "token_label": "Tokens",
+    "cache_label": "Cache",
 
     # Common
-    "reset_label": "Reset",
+    "reset_label": "Resets",
     "used_label": "used",
     "subscription_label": "Subscription",
+    "subscription_format": "{type} ({tier})",
     "last_updated": "Last Updated",
     "error_label": "Error",
+    "error_format": "Error: {msg}",
     "loading": "Loading...",
     "no_data": "--",
+
+    # Day names
+    "day_mon": "Mon",
+    "day_tue": "Tue",
+    "day_wed": "Wed",
+    "day_thu": "Thu",
+    "day_fri": "Fri",
+    "day_sat": "Sat",
+    "day_sun": "Sun",
+
+    # Extra usage
+    "extra_usage_header": "Extra Usage",
+    "extra_spent_label": "Spent",
+    "extra_limit_label": "Limit",
 }

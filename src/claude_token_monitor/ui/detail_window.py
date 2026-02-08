@@ -62,7 +62,9 @@ class DetailWindow:
             value=f"{T('cache_create_label')}: {T('no_data')} / {T('cache_read_label')}: {T('no_data')}"
         )
         self._sessions_var = tk.StringVar(
-            value=f"{T('requests_label')} {T('no_data')} / {T('sessions_label')} {T('no_data')}"
+            value=T('requests_sessions_format').format(
+                req_count=T('no_data'), sess_count=T('no_data')
+            )
         )
         self._sub_var = tk.StringVar(value=T("no_data"))
         self._updated_var = tk.StringVar(value=f"{T('last_updated')}: {T('no_data')}")
@@ -227,14 +229,18 @@ class DetailWindow:
             f"{T('cache_read_label')}: {format_tokens(cache_read)}"
         )
         self._sessions_var.set(
-            f"{T('requests_label')} {record_count} / {T('sessions_label')} {session_count}"
+            T('requests_sessions_format').format(
+                req_count=record_count, sess_count=session_count
+            )
         )
 
         # Subscription
-        subscription_type = data.get("subscription_type", T("no_data"))
-        rate_tier = data.get("rate_tier", T("no_data"))
+        subscription_type = data.get("subscription_type") or T("no_data")
+        rate_tier = data.get("rate_tier") or T("no_data")
         tier_label = "Max 5x" if "5x" in rate_tier else rate_tier
-        self._sub_var.set(f"{subscription_type} ({tier_label})")
+        self._sub_var.set(
+            T('subscription_format').format(type=subscription_type, tier=tier_label)
+        )
 
         # Last updated
         last_updated = data.get("last_updated")
@@ -298,7 +304,10 @@ class DetailWindow:
     @staticmethod
     def _format_reset_day(dt: datetime) -> str:
         """Format a reset datetime as 'Day HH:MM AM/PM'."""
-        days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        day_keys = [
+            "day_mon", "day_tue", "day_wed", "day_thu",
+            "day_fri", "day_sat", "day_sun",
+        ]
         local_dt = dt.astimezone()
-        day_name = days[local_dt.weekday()]
+        day_name = T(day_keys[local_dt.weekday()])
         return f"{day_name} {local_dt.strftime('%I:%M %p')}"
