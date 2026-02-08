@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claude-token-monitor"
+version = "2.0.0"
+description = "Cross-platform system tray app for monitoring Claude token usage"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "pystray>=0.19",
+    "Pillow>=9.0",
+    "browser-cookie3>=0.20",
+    "keyring>=24.0",
+    "cryptography",
+]
+
+[project.scripts]
+claude-token-monitor = "claude_token_monitor.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

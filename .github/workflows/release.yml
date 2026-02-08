@@ -1,0 +1,70 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Build macOS app
+        run: pyinstaller build/build_macos.spec --distpath dist/macos
+      - name: Create DMG
+        run: |
+          cd dist/macos
+          zip -r "../../Claude-Token-Monitor-macOS.zip" "Claude Token Monitor.app"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: Claude-Token-Monitor-macOS.zip
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Build Windows exe
+        run: pyinstaller build/build_windows.spec --distpath dist/windows
+      - name: Create zip
+        run: |
+          Compress-Archive -Path "dist/windows/Claude Token Monitor.exe" -DestinationPath "Claude-Token-Monitor-Windows.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: Claude-Token-Monitor-Windows.zip
+
+  release:
+    needs: [build-macos, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            Claude-Token-Monitor-macOS.zip
+            Claude-Token-Monitor-Windows.zip
+          generate_release_notes: true

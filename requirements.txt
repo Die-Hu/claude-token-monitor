@@ -1,0 +1,5 @@
+pystray>=0.19
+Pillow>=9.0
+browser-cookie3>=0.20
+keyring>=24.0
+cryptography
